@@ -115,23 +115,20 @@ function asize_picture_content($content, $element_info)
       'COOKIE_PATH' => cookie_path(),
       )
     );
+
+  $template->set_filename('asize_picture_js', realpath(ASIZE_PATH.'picture_js.tpl'));
+  $template->parse('asize_picture_js');
+  
   return $template->parse( 'default_content', true);
 }
 
 function asize_picture_prefilter($content, &$smarty)
 {
-  // step 1
   $pattern = '#\{foreach from=\$current\.unique_derivatives#';
   $replacement = '
 <span class="switchCheck" id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
 <br><br>
 {foreach from=$current.unique_derivatives';
-  $content = preg_replace($pattern, $replacement, $content);
-
-  // step 2
-  $pattern = '#PLUGIN_PICTURE_BEFORE\}\{/if\}#';
-  $replacement = 'PLUGIN_PICTURE_BEFORE}{/if}'."\n".file_get_contents(ASIZE_PATH.'picture_js.tpl');
-
   $content = preg_replace($pattern, $replacement, $content);
 
   return $content;

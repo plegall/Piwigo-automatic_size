@@ -83,9 +83,13 @@ function asize_picture_content($content, $element_info)
   {
     $is_automatic_size = false;
   }
-  $template->assign('is_automatic_size', $is_automatic_size);
+  $template->assign(
+    array(
+      'is_automatic_size' => $is_automatic_size,
+      'ASIZE_URL' => duplicate_picture_url(),
+      )
+    );
  
-
   if (isset($autosize))
   {
     if ($is_automatic_size)
@@ -126,7 +130,7 @@ function asize_picture_prefilter($content, &$smarty)
 {
   $pattern = '#\{foreach from=\$current\.unique_derivatives#';
   $replacement = '
-<span class="switchCheck" id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
+<span class="switchCheck" id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="{$ASIZE_URL}" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
 <br><br>
 {foreach from=$current.unique_derivatives';
   $content = preg_replace($pattern, $replacement, $content);

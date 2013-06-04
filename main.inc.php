@@ -68,7 +68,7 @@ function asize_picture_content($content, $element_info)
         // echo $type.' => '.$size[0].' x '.$size[1].'<br>';
         if ($size[0] <= $available_size[0] and $size[1] <= $available_size[1])
         {
-          $autosize = $type;
+          $automatic_size = $type;
         }
       }
     }
@@ -76,6 +76,7 @@ function asize_picture_content($content, $element_info)
 
   global $page, $template;
 
+  load_language('plugin.lang', ASIZE_PATH);
   $template->set_prefilter('picture', 'asize_picture_prefilter');
 
   $is_automatic_size = true;
@@ -90,13 +91,22 @@ function asize_picture_content($content, $element_info)
       )
     );
  
-  if (isset($autosize))
+  if (isset($automatic_size))
   {
     if ($is_automatic_size)
     {
-      $selected_derivative = $element_info['derivatives'][$autosize];
+      $selected_derivative = $element_info['derivatives'][$automatic_size];
     }
-    $template->assign('autosize', $autosize);
+    
+    $template->assign(
+      array(
+        'automatic_size' => $automatic_size,
+        'ASIZE_TITLE' => sprintf(
+          l10n('The best adapted size for this photo and your screen is size %s'),
+          l10n($automatic_size)
+          )
+        )
+      );
   }
 
   if ($show_original)
@@ -130,7 +140,7 @@ function asize_picture_prefilter($content, &$smarty)
 {
   $pattern = '#\{foreach from=\$current\.unique_derivatives#';
   $replacement = '
-<span class="switchCheck" id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="{$ASIZE_URL}" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
+<span class="switchCheck" id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="{$ASIZE_URL}" title="{$ASIZE_TITLE}" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
 <br><br>
 {foreach from=$current.unique_derivatives';
   $content = preg_replace($pattern, $replacement, $content);

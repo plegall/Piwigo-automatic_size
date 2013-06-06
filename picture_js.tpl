@@ -2,12 +2,13 @@
 jQuery().ready(function() {
   if (jQuery("#theImage").size() > 0) {
     function save_available_size() {
-      var width = jQuery("#theImage").width();
+      var width = jQuery("#theImage").width()
+      width -= {/literal}{$asize_width_margin}{literal};
 
       var docHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
       var offset = jQuery("#theImage").offset();
-      var bottomMargin = 40;
-      var height = docHeight - Math.ceil(offset.top) - bottomMargin;
+      var height = docHeight - Math.ceil(offset.top);
+      height -= {/literal}{$asize_height_margin}{literal};
 
       document.cookie= 'available_size='+width+'x'+height+';path={/literal}{$COOKIE_PATH}{literal}';
     }

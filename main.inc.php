@@ -65,7 +65,6 @@ function asize_picture_content($content, $element_info)
       $size = $derivative->get_size();
       if ($size)
       {
-        // echo $type.' => '.$size[0].' x '.$size[1].'<br>';
         if ($size[0] <= $available_size[0] and $size[1] <= $available_size[1])
         {
           $automatic_size = $type;
@@ -127,6 +126,8 @@ function asize_picture_content($content, $element_info)
   $template->assign( array(
       'ALT_IMG' => $element_info['file'],
       'COOKIE_PATH' => cookie_path(),
+      'asize_width_margin' => isset($conf['automatic_size_width_margin']) ? $conf['automatic_size_width_margin'] : 12,
+      'asize_height_margin' => isset($conf['automatic_size_height_margin']) ? $conf['automatic_size_height_margin'] : 40,
       )
     );
 
@@ -140,7 +141,7 @@ function asize_picture_prefilter($content, &$smarty)
 {
   $pattern = '#\{foreach from=\$current\.unique_derivatives#';
   $replacement = '
-<span class="switchCheck" id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="{$ASIZE_URL}" title="{$ASIZE_TITLE}" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
+<span id="aSizeChecked"{if !$is_automatic_size} style="visibility:hidden"{/if}>&#x2714; </span> <a id="aSize" href="{$ASIZE_URL}" title="{$ASIZE_TITLE}" data-checked="{if $is_automatic_size}yes{else}no{/if}">{\'Automatic\'|@translate}</a>
 <br><br>
 {foreach from=$current.unique_derivatives';
   $content = preg_replace($pattern, $replacement, $content);

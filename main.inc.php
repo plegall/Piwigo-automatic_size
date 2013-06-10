@@ -26,6 +26,21 @@ function asize_picture_content($content, $element_info)
 {
   global $conf;
 
+  $asize_conf_default_values = array(
+    'automatic_size_width_margin' => 12,
+    'automatic_size_height_margin' => 40,
+    'automatic_size_min_ratio' => 0.2,
+    'automatic_size_max_ratio' => 5,
+    );
+
+  foreach (array_keys($asize_conf_default_values) as $key)
+  {
+    if (!isset($conf[$key]))
+    {
+      $conf[$key] = $asize_conf_default_values[$key];
+    }
+  }
+
   if ( !empty($content) )
   {// someone hooked us - so we skip;
     return $content;
@@ -65,9 +80,28 @@ function asize_picture_content($content, $element_info)
       $size = $derivative->get_size();
       if ($size)
       {
-        if ($size[0] <= $available_size[0] and $size[1] <= $available_size[1])
+        // if we have a very high picture (such as an infographic), we only try to match width
+        if ($size[0]/$size[1] < $conf['automatic_size_min_ratio'])
         {
-          $automatic_size = $type;
+          if ($size[0] <= $available_size[0])
+          {
+            $automatic_size = $type;
+          }
+        }
+        // if we have a very wide picture (panoramic), we only try to match height
+        elseif ($size[0]/$size[1] > $conf['automatic_size_max_ratio'])
+        {
+          if ($size[1] <= $available_size[1])
+          {
+            $automatic_size = $type;
+          }
+        }
+        else
+        {
+          if ($size[0] <= $available_size[0] and $size[1] <= $available_size[1])
+          {
+            $automatic_size = $type;
+          }
         }
       }
     }
@@ -126,8 +160,8 @@ function asize_picture_content($content, $element_info)
   $template->assign( array(
       'ALT_IMG' => $element_info['file'],
       'COOKIE_PATH' => cookie_path(),
-      'asize_width_margin' => isset($conf['automatic_size_width_margin']) ? $conf['automatic_size_width_margin'] : 12,
-      'asize_height_margin' => isset($conf['automatic_size_height_margin']) ? $conf['automatic_size_height_margin'] : 40,
+      'asize_width_margin' => $conf['automatic_size_width_margin'],
+      'asize_height_margin' => $conf['automatic_size_height_margin'],
       )
     );
 

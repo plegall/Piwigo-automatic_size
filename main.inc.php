@@ -33,11 +33,11 @@ function asize_picture_content($content, $element_info)
     'automatic_size_max_ratio' => 5,
     );
 
-  foreach (array_keys($asize_conf_default_values) as $key)
+  foreach ($asize_conf_default_values as $key => $value)
   {
     if (!isset($conf[$key]))
     {
-      $conf[$key] = $asize_conf_default_values[$key];
+      $conf[$key] = $value;
     }
   }
 

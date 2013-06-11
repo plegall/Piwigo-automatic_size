@@ -1,1 +1,1 @@
-Automaticamente selecionado o maior tamanho da foto
+Automaticamente seleciona o tamanho maior da foto.

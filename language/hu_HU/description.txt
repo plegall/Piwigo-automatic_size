@@ -1,0 +1,1 @@
+Automatikusan kiválasztja a kijelző méretéhez legjobban igazodó, legnagyobb képméretet.

@@ -5,6 +5,11 @@ jQuery().ready(function() {
       var width = jQuery("#theImage").width()
       width -= {/literal}{$asize_width_margin}{literal};
 
+      if (jQuery("#theMainImage").size() > 0) {
+        var imageMarginWidth = jQuery("#theMainImage").outerWidth(true)-jQuery("#theMainImage").width();
+        width -= imageMarginWidth;
+      }
+
       var docHeight = "innerHeight" in window ? window.innerHeight : document.documentElement.offsetHeight;
       var offset = jQuery("#theImage").offset();
       var height = docHeight - Math.ceil(offset.top);

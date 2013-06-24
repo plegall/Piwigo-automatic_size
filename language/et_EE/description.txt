@@ -1,0 +1,1 @@
+Automaatselt valib suurima pildi suuruse.

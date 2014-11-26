@@ -20,6 +20,5 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
-$lang['Automatic'] = 'automatisch';
-$lang['The best adapted size for this photo and your screen is size %s'] = 'Die beste angepasste Größe für dieses Foto und deinem Bildschirm ist die Größe %s';
-?>
+$lang['Automatic'] = 'Automatisch';
+$lang['The best adapted size for this photo and your screen is size %s'] = 'Die beste angepasste Größe für dieses Foto und Ihre Bildschirmauflösung ist die Größe %s';

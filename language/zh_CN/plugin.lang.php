@@ -21,5 +21,4 @@
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
 $lang['Automatic'] = '自动';
-$lang['The best adapted size for this photo and your screen is size %s'] = '适合此相片的最佳尺寸，你的屏幕尺寸是 %s';
-?>
+$lang['The best adapted size for this photo and your screen is size %s'] = '适合这一相片和您屏幕大小的最佳尺寸是 %s';

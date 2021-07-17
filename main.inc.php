@@ -31,6 +31,9 @@ function asize_picture_content($content, $element_info)
     'automatic_size_height_margin' => 40,
     'automatic_size_min_ratio' => 0.2,
     'automatic_size_max_ratio' => 5,
+	// TFE, 20210620: add option to disable Automatic Size for a list of file types (e.g. movies and tracks)
+    'automatic_size_ignore_file_types' => true,
+    'automatic_size_ignore_file_type_list' => array('gpx', 'kml', 'mpg', 'ogg', 'mp4'),
     );
 
   foreach ($asize_conf_default_values as $key => $value)
@@ -44,6 +47,16 @@ function asize_picture_content($content, $element_info)
   if ( !empty($content) )
   {// someone hooked us - so we skip;
     return $content;
+  }
+  
+  $do_automatic_resize = true;
+  // TFE, 20210620: check against ignored file types
+  if ($conf['automatic_size_ignore_file_types']) {
+	  if (isset($element_info['file']) && in_array(get_extension($element_info['file']), $conf['automatic_size_ignore_file_type_list'])) {
+	    // we don't want automatic resize for this file type...
+		//print_r('no automatic resize, please');
+	    $do_automatic_resize = false;
+	  }
   }
 
   if (isset($_COOKIE['picture_deriv']))
@@ -113,7 +126,7 @@ function asize_picture_content($content, $element_info)
   $template->set_prefilter('picture', 'asize_picture_prefilter');
 
   $is_automatic_size = true;
-  if (@$_COOKIE['is_automatic_size'] == 'no')
+  if (@$_COOKIE['is_automatic_size'] == 'no' || !$do_automatic_resize)
   {
     $is_automatic_size = false;
   }
@@ -126,7 +139,8 @@ function asize_picture_content($content, $element_info)
  
   if (isset($automatic_size))
   {
-    if ($is_automatic_size)
+	// check, if we want to do it for this file...
+    if ($is_automatic_size && $do_automatic_resize)
     {
       $selected_derivative = $element_info['derivatives'][$automatic_size];
     }
@@ -148,10 +162,9 @@ function asize_picture_content($content, $element_info)
   }
 
   $template->append('current', array(
-      'selected_derivative' => $selected_derivative,
-      'unique_derivatives' => $unique_derivatives,
-    ), true);
-
+	  'selected_derivative' => $selected_derivative,
+	  'unique_derivatives' => $unique_derivatives,
+	), true);
 
   $template->set_filenames(
     array('default_content'=>'picture_content.tpl')

@@ -184,7 +184,7 @@ function asize_picture_content($content, $element_info)
   return $template->parse( 'default_content', true);
 }
 
-function asize_picture_prefilter($content, &$smarty)
+function asize_picture_prefilter($content)
 {
   $pattern = '#\{foreach from=\$current\.unique_derivatives#';
   $replacement = '

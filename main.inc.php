@@ -141,6 +141,10 @@ function asize_picture_content($content, $element_info)
         )
       );
   }
+  else
+  {
+    $template->assign( 'ASIZE_TITLE', '' );
+  }
 
   if ($show_original)
   {
